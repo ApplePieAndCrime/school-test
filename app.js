@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
   console.log('ERRORS......................');
   next(createHttpError(404));
   // res.status(400).json({ d: 'd' });
-  return;
+  // return;
 });
 
 // error handler
@@ -48,7 +48,7 @@ app.use(function (err, req, res, next) {
   // render the error page
   // res.type('application/json').headers({ my: 'header' });
   res.status(err.status || 500);
-  return res.json({ err });
+  return res.json({ msg: err.message });
 });
 
 var glob = require('glob');

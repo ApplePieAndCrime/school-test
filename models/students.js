@@ -23,18 +23,4 @@ const Students = sequelize.define(
   }
 );
 
-// Students.belongsToMany(Lessons, {
-//   through: LessonsStudents,
-//   foreignKey: 'student_id',
-//   otherKey: 'lesson_id',
-//   as: 'lessons',
-// });
-
-// Lessons.belongsToMany(Students, {
-//   through: LessonsStudents,
-//   foreignKey: 'lesson_id',
-//   otherKey: 'student_id',
-//   as: 'students',
-// });
-
 module.exports = Students;

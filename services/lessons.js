@@ -8,13 +8,8 @@ const Op = Sequelize.Op;
 const QueryTypes = Sequelize;
 const { Lessons, Teachers, LessonsTeachers, Students } = require('../models');
 
-const arrayError = new createHttpError.BadRequest(
+const arrayError = createHttpError.BadRequest(
   'the number of elements cannot be more than 2'
-  // {
-  //   headers: {
-  //     'X-Custom-Header': 'Value',
-  //   },
-  // }
 );
 
 const getLessonsWithRelations = async (params, next) => {
@@ -47,26 +42,16 @@ const getLessonsWithRelations = async (params, next) => {
         'lessons.date': `# BETWEEN '${date[0]}' AND '${date[1]}'`,
       };
     }
-    // return new createHttpError.BadRequest(
-    //   'the number of elements cannot be more than 2'
-    // );
-    // throw new createHttpError.BadRequest('fff');
-    return next(arrayError);
+    next(arrayError);
   }
 
   if (teacherIds.length) {
-    // where = { ...where, [Op.col]: { 'teachers.id': { [Op.in]: teacherIds } } };
     where = { ...where, 'teachers.id': `ANY(ARRAY${teacherIds})` };
   }
 
   if (studentsCount[0] != '') {
     const subquery = `SELECT COUNT(*) as studentsCount FROM students as s inner join lessons_students as ls on s.id=ls.student_id where ls.lesson_id=lessons.id`;
     if (studentsCount.length == 1) {
-      //   where = {
-      //     ...where,
-      //     studentsCount: studentsCount[0],
-      //   };
-
       where = {
         ...where,
         '': `# (${subquery}) = ${studentsCount[0]}`,
@@ -77,6 +62,7 @@ const getLessonsWithRelations = async (params, next) => {
         '': `# (${subquery}) BETWEEN ${studentsCount[0]} AND ${studentsCount[1]}`,
       };
     }
+    next(arrayError);
   }
 
   console.log({ where, entries: Object.entries(where) });
@@ -136,7 +122,11 @@ const createLessonsWithParams = async params => {
   console.log({ params });
 
   if (lessonsCount & lastDate) {
-    throw new Error('mutually exclusive options: lessonsCount or lastDate');
+    next(
+      createHttpError.BadRequest(
+        'mutually exclusive options: lessonsCount or lastDate'
+      )
+    );
   }
 
   let createdLessons = [];
@@ -182,7 +172,6 @@ const createLessonsWithParams = async params => {
     }
   };
 
-  return 'hello';
   if (lessonsCount) {
     let lastDateByCondition = moment(date).add(1, 'Y').toDate();
     await generateData(date, lastDateByCondition, lessonsCount);

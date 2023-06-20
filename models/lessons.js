@@ -36,40 +36,4 @@ const Lessons = sequelize.define(
   }
 );
 
-// Lessons.associate = models => {
-//   Lessons.hasMany(models['teachers'], {
-//     as: 'tea2',
-//     through: LessonsTeachers,
-//     foreignKey: 'lesson_id',
-//   });
-// };
-
-// Lessons.belongsToMany(Teachers, {
-//   as: 'lessons',
-//   through: LessonsTeachers,
-//   foreignKey: 'teacher_id',
-// });
-
-// Teachers.belongsToMany(Lessons, {
-//   as: 'teachers',
-//   through: LessonsTeachers,
-//   foreignKey: 'teacher_id',
-// });
-
-// Lessons.hasOne(LessonsStudents, { foreignKey: { name: 'lesson_id' } });
-
-// Lessons.hasOne(LessonsStudents);
-// Lessons.hasOne(LessonsTeachers);
-// Lessons.belongsToMany(Teachers, {
-//   through: 'lessons_teachers',
-//   as: 'teachers',
-// });
-// Lessons.belongsToMany(Students, {
-//   through: 'lessons_students',
-//   foreignKey: 'lessons_id',
-//   as: 'students',
-// });
-
-// Lessons.belongsToMany()
-
 module.exports = Lessons;
