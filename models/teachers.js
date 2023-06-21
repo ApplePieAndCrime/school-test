@@ -2,19 +2,19 @@
 const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('../db.js');
 const Lessons = require('./lessons.js');
-const LessonsTeachers = require('./lessons_teachers.js');
+const LessonTeachers = require('./lesson_teachers.js');
 
 const Teachers = sequelize.define(
   'teachers',
   // Описание таблиц
   {
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
+      autoIncrement: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.CHAR(10),
       allowNull: false,
     },
   },

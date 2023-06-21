@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const sequelize = require('../db');
 const Op = Sequelize.Op;
 const QueryTypes = Sequelize;
-const { Lessons, Teachers, LessonsTeachers, Students } = require('../models');
+const { Lessons, Teachers, LessonTeachers, Students } = require('../models');
 
 const arrayError = createHttpError.BadRequest(
   'the number of elements cannot be more than 2'
@@ -30,8 +30,7 @@ const getLessonsWithRelations = async (params, next) => {
 
   let where = {};
 
-  if (status)
-    where = { ...where, 'lessons.status': status === 'true' ? true : false };
+  if (status) where = { ...where, 'lessons.status': status };
 
   if (date[0] != '') {
     if (date.length == 1) {
@@ -161,7 +160,7 @@ const createLessonsWithParams = async params => {
       await Lessons.create({ id, title, date }).then(() => {
         if (teacherIds.length) {
           return Promise.map(teacherIds, teacherId =>
-            LessonsTeachers.create({
+            LessonTeachers.create({
               id: uuidv4(),
               teacher_id: teacherId,
               lesson_id: id,

@@ -4,14 +4,14 @@ const sequelize = require('../db.js');
 const Lessons = require('./lessons.js');
 const Teachers = require('./teachers.js');
 
-const LessonsTeachers = sequelize.define(
+const LessonTeachers = sequelize.define(
   'lessons_teachers',
   // Описание таблиц
   {
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
+      autoIncrement: true,
     },
   },
   // Опции
@@ -20,4 +20,4 @@ const LessonsTeachers = sequelize.define(
   }
 );
 
-module.exports = LessonsTeachers;
+module.exports = LessonTeachers;

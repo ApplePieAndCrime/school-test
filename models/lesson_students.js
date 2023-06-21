@@ -3,14 +3,14 @@ const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('../db.js');
 const { Lessons, Students } = require('./index');
 
-const LessonsStudents = sequelize.define(
+const LessonStudents = sequelize.define(
   'lessons_students',
   // Описание таблиц
   {
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
+      autoIncrement: true,
     },
 
     visit: {
@@ -24,4 +24,4 @@ const LessonsStudents = sequelize.define(
   }
 );
 
-module.exports = LessonsStudents;
+module.exports = LessonStudents;
