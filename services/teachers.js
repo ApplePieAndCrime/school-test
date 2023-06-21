@@ -6,7 +6,7 @@ const getAllTeachers = where => {
 };
 
 const createTeacher = data => {
-  return Teachers.create({ id: uuidv4(), ...data });
+  return Teachers.create({ ...data });
 };
 
 const getTeacher = id => {

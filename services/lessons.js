@@ -148,8 +148,6 @@ const createLessonsWithParams = async params => {
       less_num++
     ) {
       // console.log( { date, weekDaysStack, weekDay });
-      const id = uuidv4();
-      createdLessons.push(id);
 
       let nextWeekDay = weekDaysStack.shift();
       const addedDays = Math.abs(nextWeekDay - weekDay);
@@ -157,17 +155,18 @@ const createLessonsWithParams = async params => {
       weekDaysStack.push(nextWeekDay);
       weekDay = nextWeekDay;
 
-      await Lessons.create({ id, title, date }).then(() => {
-        if (teacherIds.length) {
-          return Promise.map(teacherIds, teacherId =>
-            LessonTeachers.create({
-              id: uuidv4(),
-              teacher_id: teacherId,
-              lesson_id: id,
-            })
-          );
-        }
-      });
+      const created = await Lessons.create({ id, title, date });
+
+      if (teacherIds.length) {
+        return Promise.map(teacherIds, teacherId =>
+          LessonTeachers.create({
+            id: created.id,
+            teacher_id: teacherId,
+            lesson_id: id,
+          })
+        );
+      }
+      createdLessons.push(created.id);
     }
   };
 
