@@ -6,7 +6,13 @@ const { v4: uuidv4 } = require('uuid');
 const sequelize = require('../db');
 const Op = Sequelize.Op;
 const QueryTypes = Sequelize;
-const { Lessons, Teachers, LessonTeachers, Students } = require('../models');
+const {
+  Lessons,
+  Teachers,
+  LessonTeachers,
+  Students,
+  LessonStudents,
+} = require('../models');
 
 const arrayError = createHttpError.BadRequest(
   'the number of elements cannot be more than 2'
@@ -49,7 +55,7 @@ const getLessonsWithRelations = async (params, next) => {
   }
 
   if (studentsCount[0] != '') {
-    const subquery = `SELECT COUNT(*) as studentsCount FROM students as s inner join lessons_students as ls on s.id=ls.student_id where ls.lesson_id=lessons.id`;
+    const subquery = `SELECT COUNT(*) as studentsCount FROM students as s inner join lesson_students as ls on s.id=ls.student_id where ls.lesson_id=lessons.id`;
     if (studentsCount.length == 1) {
       where = {
         ...where,
@@ -81,11 +87,25 @@ const getLessonsWithRelations = async (params, next) => {
 
   console.log({ whereString });
 
+  // const temp = await Lessons.findAll({
+  //   include: [{ model: LessonTeachers }, { model: LessonStudents }],
+  // });
+
+  // const temp = await LessonTeachers.findAll({
+  //   attributes: ['lesson_id', 'teacher_id'],
+  //   include: [{ model: Teachers }],
+  // });
+  // return temp;
+
   const data = await Lessons.findAll({
     where: sequelize.literal(whereString),
     offset: page,
     limit: lessonsPerPage,
-    include: [{ model: Teachers }, { model: Students }],
+    include: [
+      { model: Teachers },
+      { model: Students },
+      // { model: LessonTeachers },
+    ],
     attributes: [
       'id',
       'date',
@@ -93,13 +113,13 @@ const getLessonsWithRelations = async (params, next) => {
       'status',
       [
         sequelize.literal(
-          '(SELECT COUNT(*) FROM students as s inner join lessons_students as ls on s.id=ls.student_id where ls.lesson_id=lessons.id)'
+          '(SELECT COUNT(*) FROM students as s inner join lesson_students as ls on s.id=ls.student_id where ls.lesson_id=lessons.id)'
         ),
         'studentsCount',
       ],
       [
         sequelize.literal(
-          '(SELECT COUNT(*) FROM students as s inner join lessons_students as ls on s.id=ls.student_id where ls.lesson_id=lessons.id and ls.visit=true)'
+          '(SELECT COUNT(*) FROM students as s inner join lesson_students as ls on s.id=ls.student_id where ls.lesson_id=lessons.id and ls.visit=true)'
         ),
         'visitCount',
       ],

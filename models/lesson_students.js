@@ -4,15 +4,15 @@ const sequelize = require('../db.js');
 const { Lessons, Students } = require('./index');
 
 const LessonStudents = sequelize.define(
-  'lessons_students',
+  'lesson_students',
   // Описание таблиц
   {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-
+    // lesson_id: {
+    //   type: DataTypes.INTEGER,
+    // },
+    // student_id: {
+    //   type: DataTypes.INTEGER,
+    // },
     visit: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,

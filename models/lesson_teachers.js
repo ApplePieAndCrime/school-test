@@ -5,14 +5,20 @@ const Lessons = require('./lessons.js');
 const Teachers = require('./teachers.js');
 
 const LessonTeachers = sequelize.define(
-  'lessons_teachers',
+  'lesson_teachers',
   // Описание таблиц
   {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
+    // id: {
+    //   type: DataTypes.INTEGER,
+    //   primaryKey: true,
+    //   autoIncrement: true,
+    // },
+    // lesson_id: {
+    //   type: DataTypes.INTEGER,
+    // },
+    // teacher_id: {
+    //   type: DataTypes.INTEGER,
+    // },
   },
   // Опции
   {
