@@ -155,7 +155,7 @@ const createLessonsWithParams = async params => {
       weekDaysStack.push(nextWeekDay);
       weekDay = nextWeekDay;
 
-      const created = await Lessons.create({ id, title, date });
+      const created = await Lessons.create({ title, date });
 
       if (teacherIds.length) {
         return Promise.map(teacherIds, teacherId =>
